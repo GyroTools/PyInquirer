@@ -34,7 +34,8 @@ questions = [
                 'disabled': 'Unavailable at this time'
             },
             'Talk to the receptionist'
-        ]
+        ],
+        "pointer_sign": ">",
     },
     {
         'type': 'list',

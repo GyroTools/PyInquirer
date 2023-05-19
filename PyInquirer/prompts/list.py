@@ -38,6 +38,7 @@ if PY3:
 class InquirerControl(TokenListControl):
     def __init__(self, choices, **kwargs):
         self.selected_option_index = 0
+        self.pointer_sign = kwargs.pop("pointer_sign", "\u276f")
         self.answered = False
         self.choices = choices
         self._init_choices(choices)
@@ -81,7 +82,7 @@ class InquirerControl(TokenListControl):
                 self.answered = True
                 cli.set_return_value(self.get_selection()[1])
 
-            tokens.append((T.Pointer if selected else T, ' \u276f ' if selected
+            tokens.append((T.Pointer if selected else T, ' {}'.format(self.pointer_sign) if selected
             else '   '))
             if selected:
                 tokens.append((Token.SetCursorPosition, ''))
@@ -118,7 +119,10 @@ def question(message, **kwargs):
     # TODO style defaults on detail level
     style = kwargs.pop('style', default_style)
 
-    ic = InquirerControl(choices)
+    additional_parameters = dict()
+    additional_parameters.update({"pointer_sign": kwargs.pop('pointer_sign', '\u276f')})
+
+    ic = InquirerControl(choices, **additional_parameters)
 
     def get_prompt_tokens(cli):
         tokens = []
